@@ -1,0 +1,80 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'java'
+}
+
+ext {
+    javaLanguageLevel = '1.8'
+    generatedMapperSourcesDir = "${buildDir}/generated-src/mapstruct/main"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'br.com.vfs'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = rootProject.javaLanguageLevel
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+
+    mapstruct
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.flywaydb:flyway-core'
+    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.mapstruct:mapstruct:1.3.0.Final'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+
+
+    mapstruct('org.mapstruct:mapstruct-processor:1.3.0.Final')
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+sourceSets.main {
+    ext.originalJavaSrcDirs = java.srcDirs
+    java.srcDir "${generatedMapperSourcesDir}"
+}
+
+task generateMainMapperClasses(type: JavaCompile) {
+    ext.aptDumpDir = file("${buildDir}/tmp/apt/mapstruct")
+    destinationDir = aptDumpDir
+
+    classpath = compileJava.classpath + configurations.mapstruct
+    source = sourceSets.main.originalJavaSrcDirs
+    ext.sourceDestDir = file("$generatedMapperSourcesDir")
+
+    options.define(
+            compilerArgs: [
+                    "-nowarn",
+                    "-proc:only",
+                    "-encoding", "UTF-8",
+                    "-processor", "org.mapstruct.ap.MappingProcessor",
+                    "-s", sourceDestDir.absolutePath,
+                    "-source", rootProject.javaLanguageLevel,
+                    "-target", rootProject.javaLanguageLevel,
+            ]
+    );
+
+    inputs.dir source
+    outputs.dir generatedMapperSourcesDir;
+    doFirst {
+        sourceDestDir.mkdirs()
+    }
+    doLast {
+        aptDumpDir.delete()
+    }
+}
