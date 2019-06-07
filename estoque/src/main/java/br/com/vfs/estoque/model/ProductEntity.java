@@ -30,8 +30,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class ProductEntity {
 
     @Id
-    @Column(name = "isbn")
-    private String isbn;
+    @Column(name = "id")
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
