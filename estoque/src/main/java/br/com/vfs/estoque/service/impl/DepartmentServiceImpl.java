@@ -45,7 +45,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentEntity findById(final Long id){
         log.info("m=findById, id={}", id);
         Optional<DepartmentEntity> optional = departmentRepository.findById(id);
-        return optional.orElseGet(null);
+        return optional.orElse(null);
     }
 
     @Override

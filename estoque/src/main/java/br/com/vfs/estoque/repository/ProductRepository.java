@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  * @since 07/06/19 13:20
  */
 @Repository
-public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long> {
+public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, String> {
 
 }
