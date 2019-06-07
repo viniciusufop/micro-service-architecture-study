@@ -20,7 +20,7 @@ services:
   database:
     image: mysql
     container_name: mysql
-    command: --init-file /usr/home/database/init.sql
+    command: --init-file /usr/home/database/init_estoque.sql
     restart: always
     networks:
       microservices:
