@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  estoque-service:
+    build: estoque/.
+    container_name: estoque
+    depends_on:
+      - database
+    command: ["./estoque/run.sh"]
+    networks:
+      microservices:
+        ipv4_address: 172.32.0.101
+    expose:
+      - 8080
+    environment:
+      TZ: "America/Sao_Paulo"
+      PROFILE: "local"
+      SERVER_PORT: "8080"
+
+  database:
+    image: mysql
+    container_name: mysql
+    command: --init-file /usr/home/database/init.sql
+    restart: always
+    networks:
+      microservices:
+        ipv4_address: 172.32.0.102
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: db
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./database/mysql:/usr/home/database
+
+networks:
+  microservices:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv4: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.32.0.0/16
+
+volumes:
+  mysql:
+    driver: local
+
+
+
