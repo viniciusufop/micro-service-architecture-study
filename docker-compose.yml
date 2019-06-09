@@ -6,7 +6,7 @@ services:
     container_name: estoque
     depends_on:
       - database
-    command: ["./estoque/run.sh"]
+    command: ["/usr/local/estoque/run.sh", "8080"]
     networks:
       microservices:
         ipv4_address: 172.32.0.101

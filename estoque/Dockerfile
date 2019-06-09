@@ -47,3 +47,6 @@ WORKDIR $DIRECTORY
 
 # copia a aplicacao para o diretorio final
 COPY --from=BUILDER /usr/app/build/libs/estoque-0.0.1-SNAPSHOT.jar estoque.jar
+
+COPY run.sh run.sh
+RUN chmod +x run.sh

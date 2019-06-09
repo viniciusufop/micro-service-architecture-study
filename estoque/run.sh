@@ -8,4 +8,4 @@ echo ">>>>>>>>>>>> Database Server has started"
 
 java -Dserver.port=$SERVER_PORT \
     -Dfile.encoding=UTF-8       \
-    -jar /usr/local/estoque/estoque@.jar
+    -jar /usr/local/estoque/estoque.jar
