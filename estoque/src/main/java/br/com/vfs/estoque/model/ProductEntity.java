@@ -3,6 +3,7 @@ package br.com.vfs.estoque.model;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,6 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * @author vinicius
@@ -27,6 +29,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Data
 @Entity
 @Table(name = "product")
+@EntityListeners(AuditingEntityListener.class)
 public class ProductEntity {
 
     @Id
