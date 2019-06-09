@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "41067854-c84a-46e1-9fc5-32ecbdf2733c",
+		"name": "microservices_study",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "estoque",
+			"item": [
+				{
+					"name": "Criar Produto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Domain-driven Design\",\n\t\"id\": \"890099.349989\",\n\t\"department\": \"Livros Técnicos\",\n\t\"amount\": 20,\n\t\"cost\": 21.99\n}"
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments/1/products/",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"1",
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar por Codigo de barra",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments/1/products/890099.349989",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"1",
+								"products",
+								"890099.349989"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir Produto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments/1/products/890099.349989",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"1",
+								"products",
+								"890099.349989"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar quantidade para produto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "amount",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments/1/products/890099.349989/addAmount",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"1",
+								"products",
+								"890099.349989",
+								"addAmount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover quantidade do produto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "amount",
+									"value": "8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments/1/products/890099.349989/subtractAmount",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"1",
+								"products",
+								"890099.349989",
+								"subtractAmount"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "deparment",
+			"item": [
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Literatura Infantil\",\n\t\"description\": \"Livros de Literatura Infantil\"\n}"
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{estoque_domain}}/v1/departments/search?name=Infantil",
+							"protocol": "http",
+							"host": [
+								"{{estoque_domain}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Infantil"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
