@@ -6,12 +6,10 @@ import br.com.vfs.estoque.model.DepartmentEntity;
 import br.com.vfs.estoque.model.ProductEntity;
 import br.com.vfs.estoque.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 public abstract class ProductMapperDecorator implements ProductMapper {
 
     @Autowired
-    @Qualifier("delegate")
     private ProductMapper delegate;
 
     @Autowired
