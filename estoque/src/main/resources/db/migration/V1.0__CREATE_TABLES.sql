@@ -1,5 +1,5 @@
 -- -----------------------------------------------------
--- Table `db_azship`.`srm_department`
+-- Table `estoque`.`department`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estoque`.`department` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `estoque`.`department` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `db_azship`.`srm_product`
+-- Table `estoque`.`product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estoque`.`product` (
   `id` VARCHAR(100) NOT NULL,
@@ -19,11 +19,11 @@ CREATE TABLE IF NOT EXISTS `estoque`.`product` (
   `amount` INT NOT NULL,
   `cost` DOUBLE NOT NULL,
   `change_date` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`isbn`),
+  PRIMARY KEY (`id`),
   INDEX `fk_product_department_idx` (`department_id` ASC),
   CONSTRAINT `fk_shipping_destination_place1`
     FOREIGN KEY (`department_id`)
-    REFERENCES `estoque`.`_department` (`id`)
+    REFERENCES `estoque`.`department` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
