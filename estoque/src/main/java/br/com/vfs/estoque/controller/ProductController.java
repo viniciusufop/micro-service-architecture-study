@@ -5,8 +5,10 @@ import br.com.vfs.estoque.dto.response.ProductResponse;
 import br.com.vfs.estoque.mapper.ProductMapper;
 import br.com.vfs.estoque.model.ProductEntity;
 import br.com.vfs.estoque.service.ProductService;
+import java.net.URI;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,10 +39,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponse save(@PathVariable("idDepartments") Long departmentId,
+    public ResponseEntity<ProductResponse> save(@PathVariable("idDepartments") Long departmentId,
             @Valid @RequestBody ProductRequest productRequest){
         final ProductEntity product = productMapper.productRequestToProductEntity(departmentId, productRequest);
-        return productMapper.productEntityToProductResponse(productService.save(product));
+        final ProductResponse response = productMapper.productEntityToProductResponse(productService.save(product));
+        return ResponseEntity
+                .created(URI.create(String.format("/v1/departments/%d/products/%s", departmentId, response.getId())))
+                .body(response);
     }
 
     @GetMapping(value = "/{id}")

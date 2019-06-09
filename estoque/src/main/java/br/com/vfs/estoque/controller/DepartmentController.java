@@ -5,11 +5,13 @@ import br.com.vfs.estoque.dto.response.DepartmentResponse;
 import br.com.vfs.estoque.mapper.DepartmentMapper;
 import br.com.vfs.estoque.model.DepartmentEntity;
 import br.com.vfs.estoque.service.DepartmentService;
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,9 +43,13 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public DepartmentResponse save(@Valid @RequestBody DepartmentRequest departmentRequest){
+    public ResponseEntity<DepartmentResponse> save(@Valid @RequestBody DepartmentRequest departmentRequest){
         final DepartmentEntity department = departmentMapper.departmentRequestToDepartmentEntity(departmentRequest);
-        return departmentMapper.departmentEntityToDepartmentResponse(departmentService.save(department));
+        final DepartmentResponse response = departmentMapper
+                .departmentEntityToDepartmentResponse(departmentService.save(department));
+        return ResponseEntity
+                .created(URI.create(String.format("/v1/departments/%d", response.getId())))
+                .body(response);
     }
 
     @GetMapping(value = "/search")

@@ -51,7 +51,7 @@ public class ProductIntegrationTest {
 
         mvc.perform(post("/v1/departments/1/products").contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.toJson(productRequest)))
-                .andExpect(status().isOk())  //TODO mudar para created (201)
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is("112314.123123")))
                 .andExpect(jsonPath("$.department", is(departmentEntity.getName())));
 
