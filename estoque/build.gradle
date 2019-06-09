@@ -1,80 +1,46 @@
 plugins {
     id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'net.ltgt.apt' version '0.20'
     id 'java'
 }
 
-ext {
-    javaLanguageLevel = '1.8'
-    generatedMapperSourcesDir = "${buildDir}/generated-src/mapstruct/main"
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'net.ltgt.apt-idea'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
 }
 
-apply plugin: 'io.spring.dependency-management'
+ext {
+    mapstructVersion = "1.3.0.Final"
+}
 
 group = 'br.com.vfs'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = rootProject.javaLanguageLevel
-
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-
-    mapstruct
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-core'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+
     compileOnly 'org.projectlombok:lombok'
-    compileOnly 'org.mapstruct:mapstruct:1.3.0.Final'
-    runtimeOnly 'com.h2database:h2'
+
     runtimeOnly 'mysql:mysql-connector-java'
+
     annotationProcessor 'org.projectlombok:lombok'
-
-
-    mapstruct('org.mapstruct:mapstruct-processor:1.3.0.Final')
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-sourceSets.main {
-    ext.originalJavaSrcDirs = java.srcDirs
-    java.srcDir "${generatedMapperSourcesDir}"
-}
-
-task generateMainMapperClasses(type: JavaCompile) {
-    ext.aptDumpDir = file("${buildDir}/tmp/apt/mapstruct")
-    destinationDir = aptDumpDir
-
-    classpath = compileJava.classpath + configurations.mapstruct
-    source = sourceSets.main.originalJavaSrcDirs
-    ext.sourceDestDir = file("$generatedMapperSourcesDir")
-
-    options.define(
-            compilerArgs: [
-                    "-nowarn",
-                    "-proc:only",
-                    "-encoding", "UTF-8",
-                    "-processor", "org.mapstruct.ap.MappingProcessor",
-                    "-s", sourceDestDir.absolutePath,
-                    "-source", rootProject.javaLanguageLevel,
-                    "-target", rootProject.javaLanguageLevel,
-            ]
-    );
-
-    inputs.dir source
-    outputs.dir generatedMapperSourcesDir;
-    doFirst {
-        sourceDestDir.mkdirs()
-    }
-    doLast {
-        aptDumpDir.delete()
-    }
+    testImplementation 'com.h2database:h2'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 }
