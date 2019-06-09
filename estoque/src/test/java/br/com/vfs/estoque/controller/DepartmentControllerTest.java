@@ -57,7 +57,7 @@ public class DepartmentControllerTest {
 
         mvc.perform(post("/v1/departments").contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.toJson(departmentRequest)))
-                .andExpect(status().isOk())
+                .andExpect(status().isOk())   //TODO mudar para created (201)
                 .andExpect(jsonPath("$.name", is("Literatura Nacional")));
 
     }

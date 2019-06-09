@@ -55,7 +55,7 @@ public class ProductControllerTest {
 
         mvc.perform(post("/v1/departments/1/products").contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.toJson(productRequest)))
-                .andExpect(status().isOk())
+                .andExpect(status().isOk()) //TODO mudar para created (201)
                 .andExpect(jsonPath("$.id", is("112314.123123")));
 
     }
