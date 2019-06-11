@@ -6,10 +6,10 @@ services:
     container_name: estoque
     depends_on:
       - database
-    command: ["/usr/local/estoque/run.sh", "8080"]
+    command: ["/usr/local/estoque/run.sh"]
     networks:
       microservices:
-        ipv4_address: 172.32.0.101
+        ipv4_address: 172.33.0.101
     expose:
       - 8080
     environment:
@@ -24,7 +24,7 @@ services:
     restart: always
     networks:
       microservices:
-        ipv4_address: 172.32.0.102
+        ipv4_address: 172.33.0.102
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: estoque
@@ -32,6 +32,17 @@ services:
     volumes:
       - mysql:/var/lib/mysql
       - ./database/mysql:/usr/home/database
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    networks:
+      microservices:
+        ipv4_address: 172.33.0.104
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
 
 networks:
   microservices:
@@ -41,7 +52,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.32.0.0/16
+        - subnet: 172.33.0.0/16
 
 volumes:
   mysql:
