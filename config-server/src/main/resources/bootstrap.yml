@@ -1,0 +1,49 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: config-server
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+  cloud:
+    config:
+      server:
+        git:
+          search-paths: estoque
+          uri: https://github.com/viniciusufop/micro-service-config.git
+          ignoreLocalSshSettings: true
+          hostKey: someHostKey
+          hostKeyAlgorithm: ssh-rsa
+          privateKey: -----BEGIN RSA PRIVATE KEY-----
+            MIIEpQIBAAKCAQEA48Ir+bRNdl9PTuSM9FqTP5PSJtvCOt01L8/rO4fqBBLJrQqW
+            4WSYWX2QpQn+C8TrZ8FD7RwAU4FS8RAOS4MP3/nqj3qjjq7wXy1N/kdikzooE+en
+            DFUF0wMH9Sa6rWiUjfYoIeFtlD9zSfTOT9KnaLrxp7a/8q995jgPBFl2pXZWzpK8
+            MSLYX1IJb2/jDcmdJVcxgGYa5Otk7UGDKcHqmLLSssz4jumsotEq1uxC4ILOEA3J
+            ssHscv6cxIjUr/qebG55LiQo6CXz0hyWR9w/wjuKD/BoqjeJomrOJkW7sg4eJMkQ
+            tKM1dFvUBsMK641Oxnu91O/HnN7qwgRmSlPmeQIDAQABAoIBAQDdi3IFSjqTa3CU
+            2EK4KibTkDG6tMeBRM3IvWIfHT0oSzI8DXHou1ZqrnZ143tn7VvjKB6v1S4IDGMm
+            tCyDjXByuQJOIMhaMZcFrecQ8lVTyx1TB2H53/ZzZJ5n/A1YQsNGN+yf0E0sCHBX
+            vza0dL99Y2NPdbfPFJ/NwjfxTijYFqeDnUaSRhB5Xyrg2dyCP8uDxKb26o/FWGzJ
+            Dya7FaPk23gY6+HaOstBiuf6s8C80gPqtfBkx1b+IaOh95kh+Xdw2zDPyIJ2Jg5E
+            Jn+w1d4f4C9yXNktoq3e7LeeMVT3O54Al35RbWKMS8AH/g15RBpJMszrPEy+Prnn
+            cbvCQ94BAoGBAPtV6wG1Xp65tSTmCosv9wpACmBJyPIKMsQfejskk710dM41J9nE
+            2xuGLDgljOMFaiUjHYJj0y5IUWtVg9/giMOQGCZYfSBUBRYv3b8sTBYBsru2jyy0
+            H2FORpdcEqUwoiAl10Ct19ro8ypYh/X39qCqd/xIBuE7aF4hNajEPzc5AoGBAOf8
+            PXaDw2k3OrkDkWwzqXg0a/TYyKfJ39VYDImsOuPpkhl3roOWkYGlWQpMi9O3R+Xv
+            FF4feLV2cnnLh3zhtsiZi3MCRSop6OR/981jYfAefFHd4uWGPYGIOCdwIGLMauo9
+            112Ab8VGxDVisbedvuErIS3Ro3CJTzn8xANxJOlBAoGBAKc70QYu/0mP+dcWdheN
+            D8yzNfRBxEJAxOy4oSUvPlrGXV5EAkMleEFFMrEdUzRPiwQw7FaxQ3g9SGep2/ig
+            N4AgpeEF6iQTo9rSeLLWr73I3XuHipbNN0AQzGm0Kvfdd1L6utJfmgwgCoS3qafh
+            mSnoo7Oq3WEKnXRclo64HfQJAoGASjJp8hroiCFq/bu/ak0HufOCR9iCLPArUBAO
+            SoY0e6q72LtnrJyew0mANgQPgNKRA2C5MfV85QUSThQjrHSAwp4hdNJYDslCvLqV
+            JjLQIz2M455FMMYDrAdGdo6tPQxGcc7/r98hYIZmwPBlCOZCI8Bopz/yt06jcVd/
+            1d39QUECgYEAsKFzMcfK+52b1BzDY3qOjVvLV1j3TEqCrKRigX6NSxAvvt1sVOKL
+            6xfP+BL9SUfrtTG+Dtu3R3zR/fx8lsMxBl79nuqdpU3YGk+jspJN14xBXx4Wv3qU
+            Py4N5UU4WwUt/qWCRoMfRwtB7AWqRKycn1mbqQEsobxDCu36GvXecy0=
+            -----END RSA PRIVATE KEY-----
+encrypt:
+  key: '12313213'
+
