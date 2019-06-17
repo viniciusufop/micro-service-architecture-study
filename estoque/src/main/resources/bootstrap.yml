@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: estoque
+  profiles:
+    active:
+      prod
+  cloud:
+    config:
+      enabled: true
+      uri: http://config-server:8080
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
