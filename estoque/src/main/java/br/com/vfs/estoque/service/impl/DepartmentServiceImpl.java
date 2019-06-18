@@ -1,5 +1,6 @@
 package br.com.vfs.estoque.service.impl;
 
+import br.com.vfs.estoque.config.ErrorMessageConfig;
 import br.com.vfs.estoque.exception.BusinessServiceException;
 import br.com.vfs.estoque.model.DepartmentEntity;
 import br.com.vfs.estoque.repository.DepartmentRepository;
@@ -22,16 +23,20 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
 
+    private final ErrorMessageConfig errorMessageConfig;
+
     @Autowired
-    public DepartmentServiceImpl(final DepartmentRepository departmentRepository){
+    public DepartmentServiceImpl(final DepartmentRepository departmentRepository,
+            final ErrorMessageConfig errorMessageConfig){
         this.departmentRepository = departmentRepository;
+        this.errorMessageConfig = errorMessageConfig;
     }
 
     @Override
     public DepartmentEntity save(final DepartmentEntity department){
         log.info("m=save, department={}", department);
         if (department.isNew() && departmentRepository.findByName(department.getName()).isPresent())
-            throw new BusinessServiceException("Ja existe um departamento com esse nome");
+            throw new BusinessServiceException(errorMessageConfig.getDepartmentExist());
         return departmentRepository.save(department);
     }
 

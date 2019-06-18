@@ -3,6 +3,7 @@ package br.com.vfs.estoque.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import br.com.vfs.estoque.config.ErrorMessageConfig;
 import br.com.vfs.estoque.exception.BusinessServiceException;
 import br.com.vfs.estoque.model.DepartmentEntity;
 import br.com.vfs.estoque.repository.DepartmentRepository;
@@ -25,6 +26,9 @@ public class DepartmentServiceTest {
 
     @Mock
     private DepartmentRepository departmentRepository;
+
+    @Mock
+    private ErrorMessageConfig errorMessageConfig;
 
     @Before
     public void setUp(){

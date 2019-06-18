@@ -1,5 +1,6 @@
 package br.com.vfs.estoque.service.impl;
 
+import br.com.vfs.estoque.config.ErrorMessageConfig;
 import br.com.vfs.estoque.exception.BusinessServiceException;
 import br.com.vfs.estoque.model.ProductEntity;
 import br.com.vfs.estoque.repository.ProductRepository;
@@ -21,16 +22,20 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ErrorMessageConfig errorMessageConfig;
+
     @Autowired
-    public ProductServiceImpl(final ProductRepository productRepository){
+    public ProductServiceImpl(final ProductRepository productRepository,
+            final ErrorMessageConfig errorMessageConfig){
         this.productRepository = productRepository;
+        this.errorMessageConfig = errorMessageConfig;
     }
 
     @Override
     public ProductEntity save(final ProductEntity product){
         log.info("m=save, product={}", product);
         if (productRepository.findById(product.getId()).isPresent())
-            throw new BusinessServiceException("Ja existe um produto com esse codigo id");
+            throw new BusinessServiceException(errorMessageConfig.getProductExist());
         return productRepository.save(product);
     }
 
@@ -53,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
         log.info("m=subtractAmount, id={}, amount={}", id, amount);
         ProductEntity product = findById(id);
         if (product.getAmount() < amount)
-            throw new BusinessServiceException("Quantidade nao esta disponivel no estoque");
+            throw new BusinessServiceException(errorMessageConfig.getProductQuantityNotAvailable());
         product.setAmount(product.getAmount() - amount);
         return productRepository.save(product);
     }
