@@ -12,7 +12,7 @@ spring:
     config:
       server:
         git:
-          search-paths: estoque
+          search-paths: estoque, pedido
           uri: https://github.com/viniciusufop/micro-service-config.git
           ignoreLocalSshSettings: true
           hostKey: someHostKey
