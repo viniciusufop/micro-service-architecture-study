@@ -1,4 +1,3 @@
-use pedido
 db.createUser(
     {
         user: "pedido",

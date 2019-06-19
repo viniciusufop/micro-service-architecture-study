@@ -98,6 +98,8 @@ services:
   mongo-express:
     image: mongo-express
     restart: always
+    depends_on:
+      - mongodb
     networks:
       microservices:
         ipv4_address: 172.33.0.108
