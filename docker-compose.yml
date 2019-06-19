@@ -6,6 +6,8 @@ services:
     container_name: estoque
     depends_on:
       - database
+      - config-server
+      - service-discovery
     command: ["/usr/local/estoque/run.sh"]
     networks:
       microservices:
@@ -23,6 +25,7 @@ services:
     container_name: config-server
     depends_on:
       - rabbitmq
+      - service-discovery
     command: ["/usr/local/config-server/run.sh"]
     networks:
       microservices:
