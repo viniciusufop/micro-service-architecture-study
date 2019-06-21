@@ -12,9 +12,14 @@ import br.com.vfs.pedido.exception.BusinessServiceException;
 import br.com.vfs.pedido.exception.OrderNotFoundException;
 import br.com.vfs.pedido.repository.OrderRepository;
 import br.com.vfs.pedido.service.OrderService;
+
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @HystrixCommand
     public OrderEntity create(final OrderEntity order){
         log.info("m=create, order={}", order);
         validateItensExists(order);
@@ -50,13 +56,38 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @HystrixCommand
     public OrderEntity findById(final String id){
         return getOrderById(id);
     }
 
     @Override
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
+                    value = "1000")}, fallbackMethod = "fallBackFindByClient")
     public List<OrderEntity> findByClient(final String cpf){
+        sleep(); //para forcar ir no fallback
         return orderRepository.findByClient_CpfOrderByCreateDateAsc(cpf);
+    }
+
+    /**
+     * metodo de fallback para teste do hystrix
+     * @param cpf
+     * @return
+     */
+    private List<OrderEntity> fallBackFindByClient(String cpf) {
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * metodo para forcar o fallback por timeout
+     */
+    private void sleep() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -81,10 +112,19 @@ public class OrderServiceImpl implements OrderService {
 
     private void validateItensExists(OrderEntity order){
         for (OrderItemEntity item : order.getItens()) {
-            Product product = estoqueClient.findById(1L, item.getProduct());
+            final Product product = findProductByBarCode(item);
             if (product == null)
                 throw new BusinessServiceException("Produto nao encontrado");
         }
+    }
+
+    @HystrixCommand(threadPoolKey = "productByBarCodeThreadPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize",value="30"),
+                    @HystrixProperty(name="maxQueueSize", value="10")})
+    private Product findProductByBarCode(OrderItemEntity item) {
+        sleep();
+        return estoqueClient.findById(1l, item.getProduct());
     }
 
     private OrderEntity getOrderById(String id){
@@ -102,8 +142,12 @@ public class OrderServiceImpl implements OrderService {
 
     private void updateProductAmount(OrderEntity order){
         order.getItens().forEach(item -> {
-            estoqueClient.subtractAmount(1l, item.getProduct(), item.getAmount());
-            ;
+            subtractProductAmount(item);
         });
+    }
+
+    @HystrixCommand
+    private void subtractProductAmount(OrderItemEntity item) {
+        estoqueClient.subtractAmount(1l, item.getProduct(), item.getAmount());
     }
 }
